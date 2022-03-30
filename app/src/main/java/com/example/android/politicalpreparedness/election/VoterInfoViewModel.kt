@@ -1,9 +1,18 @@
 package com.example.android.politicalpreparedness.election
 
-import androidx.lifecycle.ViewModel
-import com.example.android.politicalpreparedness.database.ElectionDao
+import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.android.politicalpreparedness.base.ui.BaseViewModel
+import com.example.android.politicalpreparedness.network.models.Election
 
-class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
+
+class VoterInfoViewModel(app: Application) :
+    BaseViewModel(app) {
+
+    private val _selectedElection = MutableLiveData<Election>()
+    val selectedElection: LiveData<Election>
+        get() = _selectedElection
 
     //TODO: Add live data to hold voter info
 
@@ -17,5 +26,9 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     /**
      * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
      */
+
+    fun refresh(data: Election) {
+        _selectedElection.value = data
+    }
 
 }

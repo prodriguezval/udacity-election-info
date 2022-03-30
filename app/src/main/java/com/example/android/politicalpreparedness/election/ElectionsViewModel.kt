@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.base.ui.BaseViewModel
@@ -16,12 +17,13 @@ class ElectionsViewModel(app: Application) : BaseViewModel(app) {
         CivicsApi
     )
 
-    val upcomingElections = MutableLiveData<List<Election>>()
-
+    private val _upcomingElections = MutableLiveData<List<Election>>()
+    val upcomingElections: LiveData<List<Election>>
+        get() = _upcomingElections
 
     init {
         viewModelScope.launch {
-            upcomingElections.value = repository.refreshElections()
+            _upcomingElections.value = repository.refreshElections()
         }
     }
     //TODO: Create live data val for saved elections
