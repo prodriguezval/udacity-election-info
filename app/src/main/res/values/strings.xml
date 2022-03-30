@@ -4,5 +4,7 @@
     <string name="home_logo_content_description">Logo Voting hand</string>
     <string name="btn_upcoming_elections">Upcoming Elections</string>
     <string name="btn_find_representatives">Find My Representatives</string>
+    <string name="title_upcoming_elections">Upcoming Elections</string>
+    <string name="title_saved_elections">Saved Elections</string>
 
 </resources>
