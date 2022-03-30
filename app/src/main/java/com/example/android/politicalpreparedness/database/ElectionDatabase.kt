@@ -39,4 +39,9 @@ abstract class ElectionDatabase: RoomDatabase() {
 
     }
 
+    suspend fun getAll() = electionDao.getAll()
+    suspend fun get(id: Int) = electionDao.get(id)
+    suspend fun insert(election: Election) = electionDao.insert(election)
+    suspend fun delete(election: Election) = electionDao.delete(election)
+
 }

@@ -3,12 +3,16 @@ package com.example.android.politicalpreparedness.election
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.android.politicalpreparedness.base.ui.BaseViewModel
+import androidx.lifecycle.ViewModel
+import com.example.android.politicalpreparedness.election.repository.VoterInfoRepository
 import com.example.android.politicalpreparedness.network.models.Election
 
 
-class VoterInfoViewModel(app: Application) :
-    BaseViewModel(app) {
+class VoterInfoViewModel(
+    private val application: Application,
+    private val repository: VoterInfoRepository
+) :
+    ViewModel() {
 
     private val _selectedElection = MutableLiveData<Election>()
     val selectedElection: LiveData<Election>

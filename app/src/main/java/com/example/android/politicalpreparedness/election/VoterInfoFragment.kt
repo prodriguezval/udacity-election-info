@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.base.ui.BaseFragment
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import com.example.android.politicalpreparedness.election.repository.VoterInfoRepository
+import com.example.android.politicalpreparedness.network.CivicsApi
 
 
-class VoterInfoFragment : BaseFragment() {
+class VoterInfoFragment : Fragment() {
 
     lateinit var binding: FragmentVoterInfoBinding
-    override val viewModel: VoterInfoViewModel by viewModels()
+
+    private lateinit var viewModel: VoterInfoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +28,11 @@ class VoterInfoFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voter_info, container, false)
         binding.lifecycleOwner = this
 
+        val repository = VoterInfoRepository(CivicsApi)
+        val voterInfoViewModelFactory =
+            VoterInfoViewModelFactory(repository, requireActivity().application)
+        viewModel =
+            ViewModelProvider(this, voterInfoViewModelFactory)[VoterInfoViewModel::class.java]
         val arguments = VoterInfoFragmentArgs.fromBundle(requireArguments())
         viewModel.refresh(arguments.election)
 
