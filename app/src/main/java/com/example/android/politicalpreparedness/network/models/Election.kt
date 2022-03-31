@@ -5,15 +5,17 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.android.politicalpreparedness.database.Constants.ELECTION_TABLE_NAME
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-@Entity(tableName = "election_table")
+@Entity(tableName = ELECTION_TABLE_NAME)
 data class Election(
-        @PrimaryKey val id: Int,
-        @ColumnInfo(name = "name") val name: String,
-        @ColumnInfo(name = "electionDay") val electionDay: Date,
-        @Embedded(prefix = "division_") @Json(name = "ocdDivisionId") val division: Division
+    @PrimaryKey val id: Int,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "electionDay") val electionDay: Date,
+    @Embedded(prefix = "division_") @Json(name = "ocdDivisionId") val division: Division,
+    var isSaved: Boolean = false
 ) : Parcelable
