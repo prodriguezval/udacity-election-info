@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
@@ -28,6 +29,7 @@ class ElectionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val repository = ElectionsRepository(
+            ElectionDatabase.getInstance(requireContext()),
             CivicsApi
         )
         val electionViewModelFactory =

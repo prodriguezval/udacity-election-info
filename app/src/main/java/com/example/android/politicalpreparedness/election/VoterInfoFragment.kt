@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.database.VoterInfoDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
 import com.example.android.politicalpreparedness.election.repository.ElectionsRepository
@@ -34,7 +35,8 @@ class VoterInfoFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voter_info, container, false)
         binding.lifecycleOwner = this
 
-        val electionRepository = ElectionsRepository(CivicsApi)
+        val electionRepository =
+            ElectionsRepository(ElectionDatabase.getInstance(requireContext()), CivicsApi)
         val repository =
             VoterInfoRepository(VoterInfoDatabase.getInstance(requireContext()), CivicsApi)
         val voterInfoViewModelFactory =

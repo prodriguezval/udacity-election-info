@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.election.repository.ElectionsRepository
 import com.example.android.politicalpreparedness.network.models.Election
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ElectionsViewModel(
@@ -20,7 +21,9 @@ class ElectionsViewModel(
 
     init {
         viewModelScope.launch {
-            _upcomingElections.value = repository.refreshElections()
+            repository.refreshElections().collect {
+                _upcomingElections.value = it
+            }
         }
     }
     //TODO: Create live data val for saved elections
