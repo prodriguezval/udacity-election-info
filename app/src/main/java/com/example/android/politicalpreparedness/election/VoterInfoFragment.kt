@@ -1,5 +1,8 @@
 package com.example.android.politicalpreparedness.election
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +16,7 @@ import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBi
 import com.example.android.politicalpreparedness.election.repository.ElectionsRepository
 import com.example.android.politicalpreparedness.election.repository.VoterInfoRepository
 import com.example.android.politicalpreparedness.network.CivicsApi
+import com.google.android.material.snackbar.Snackbar
 
 
 class VoterInfoFragment : Fragment() {
@@ -40,24 +44,39 @@ class VoterInfoFragment : Fragment() {
         val arguments = VoterInfoFragmentArgs.fromBundle(requireArguments())
         viewModel.refresh(arguments.election)
 
-        //TODO: Add ViewModel values and create ViewModel
-
-        //TODO: Add binding values
         binding.viewModel = viewModel
-        //TODO: Populate voter info -- hide views without provided data.
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-         */
+        binding.stateLocations.setOnClickListener {
+            val urlStr = viewModel.voterInfo.value?.votingLocationUrl
+            urlStr?.run {
+                startWebViewActivity(this)
+            }
+        }
 
-
-        //TODO: Handle loading of URLs
-
-        //TODO: Handle save button UI state
-        //TODO: cont'd Handle save button clicks
+        binding.stateBallot.setOnClickListener {
+            val urlStr = viewModel.voterInfo.value?.ballotInformationUrl
+            urlStr?.run {
+                startWebViewActivity(this)
+            }
+        }
 
         return binding.root
     }
 
-    //TODO: Create method to load URL intents
+    private fun startWebViewActivity(urlStr: String) {
+        val uri: Uri = Uri.parse(urlStr)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+
+            val snack = Snackbar.make(
+                requireView(),
+                getString(R.string.msg_no_web_browser_found),
+                Snackbar.LENGTH_LONG
+            )
+            snack.show()
+        }
+    }
 
 }

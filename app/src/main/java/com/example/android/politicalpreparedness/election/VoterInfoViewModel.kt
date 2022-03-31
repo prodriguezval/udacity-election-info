@@ -62,4 +62,24 @@ class VoterInfoViewModel(
         }
     }
 
+    fun onFollowButtonClick() {
+        viewModelScope.launch {
+            val election = _selectedElection.value
+
+            election?.let {
+                it.isSaved = !it.isSaved
+            }
+
+            _selectedElection.value = election!!
+//            _selectedElection.value?.let {
+//                if(isElectionSaved.value == true) {
+//                    repository.deleteSavedElection(it)
+//                } else {
+//                    repository.insertSavedElection(it)
+//                }
+//                refreshIsElectionSaved(it)
+//            }
+        }
+    }
+
 }
