@@ -43,6 +43,7 @@ abstract class ElectionDatabase: RoomDatabase() {
     suspend fun get(id: Int) = electionDao.get(id)
     suspend fun insertAll(elections: List<Election>) = electionDao.insertAll(elections)
     suspend fun insert(election: Election) = electionDao.insert(election)
+    suspend fun getAllSaved() = electionDao.getAllSaved()
     suspend fun delete(election: Election) = electionDao.delete(election)
 
 }

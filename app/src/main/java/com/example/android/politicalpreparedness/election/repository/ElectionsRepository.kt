@@ -14,7 +14,7 @@ class ElectionsRepository(
     private val api: CivicsApi
 ) {
 
-    suspend fun refreshElections(): Flow<List<Election>> {
+    suspend fun getUpcomingElections(): Flow<List<Election>> {
         var elections: Flow<List<Election>>
         withContext(Dispatchers.IO) {
             val electionResponse = api.getElections().elections
@@ -23,6 +23,15 @@ class ElectionsRepository(
         }
 
         return elections
+    }
+
+    suspend fun getSavedElections(): Flow<List<Election>> {
+        var savedElections: Flow<List<Election>>
+        withContext(Dispatchers.IO) {
+            savedElections = electionDatabase.getAllSaved()
+        }
+
+        return savedElections
     }
 
     suspend fun updateSavedStatus(election: Election): Election {

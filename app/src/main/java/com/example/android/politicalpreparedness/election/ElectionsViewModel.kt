@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,17 +20,21 @@ class ElectionsViewModel(
     val upcomingElections: LiveData<List<Election>>
         get() = _upcomingElections
 
+    private val _savedElections = MutableLiveData<List<Election>>()
+    val savedElections: LiveData<List<Election>>
+        get() = _savedElections
+
     init {
         viewModelScope.launch {
-            repository.refreshElections().collect {
+            repository.getUpcomingElections().collect {
                 _upcomingElections.value = it
+            }
+
+            repository.getSavedElections().collect {
+                _savedElections.value = it
+                Log.i("ElectionsViewModel", "Saved election has ${it.size} registers")
             }
         }
     }
-    //TODO: Create live data val for saved elections
-
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
-
-    //TODO: Create functions to navigate to saved or upcoming election voter info
 
 }

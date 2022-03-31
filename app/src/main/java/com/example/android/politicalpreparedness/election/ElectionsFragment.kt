@@ -15,6 +15,7 @@ import com.example.android.politicalpreparedness.election.adapter.ElectionListAd
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 import com.example.android.politicalpreparedness.election.repository.ElectionsRepository
 import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.network.models.Election
 
 class ElectionsFragment : Fragment() {
 
@@ -42,23 +43,34 @@ class ElectionsFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        val upcomingElectionAdapter = ElectionListAdapter(ElectionListener { election ->
-            navController.navigate(
-                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
-                    election
-                )
-            )
+        val upcomingElectionAdapter = ElectionListAdapter(ElectionListener {
+            navigateToElectionDetail(it)
         })
 
         binding.rvUpcomingElections.adapter = upcomingElectionAdapter
-        viewModel.upcomingElections.observe(viewLifecycleOwner) { elections ->
-            upcomingElectionAdapter.submitList(elections)
+        viewModel.upcomingElections.observe(viewLifecycleOwner) {
+            upcomingElectionAdapter.submitList(it)
+        }
+
+
+        val savedElectionAdapter = ElectionListAdapter(ElectionListener {
+            navigateToElectionDetail(it)
+        })
+        binding.rvSavedElections.adapter = savedElectionAdapter
+        viewModel.savedElections.observe(viewLifecycleOwner) {
+            savedElectionAdapter.submitList(it)
         }
 
 
         return binding.root
     }
 
-    //TODO: Refresh adapters when fragment loads
+    private fun navigateToElectionDetail(election: Election) {
+        navController.navigate(
+            ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
+                election
+            )
+        )
+    }
 
 }

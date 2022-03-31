@@ -8,11 +8,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ElectionDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(elections: List<Election>)
 
     @Query("SELECT * FROM ${Constants.ELECTION_TABLE_NAME}")
     fun getAll(): Flow<List<Election>>
+
+    @Query("SELECT * FROM ${Constants.ELECTION_TABLE_NAME} WHERE isSaved = 1")
+    fun getAllSaved(): Flow<List<Election>>
 
     @Query("SELECT * FROM ${Constants.ELECTION_TABLE_NAME} WHERE id = :id")
     fun get(id: Int): Flow<Election>

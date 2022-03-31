@@ -35,7 +35,7 @@ class VoterInfoViewModel(
 
 
     fun refresh(data: Election) {
-        _selectedElection.value = data
+        refreshIsElectionSaved(data)
         refreshVoterInfo(data)
     }
 
