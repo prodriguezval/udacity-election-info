@@ -33,10 +33,6 @@ class VoterInfoViewModel(
     val voterInfo: LiveData<VoterInfo>
         get() = _voterInfo
 
-    //TODO: Add var and methods to support loading URLs
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
 
     fun refresh(data: Election) {
         _selectedElection.value = data
@@ -62,23 +58,18 @@ class VoterInfoViewModel(
         }
     }
 
+    private fun refreshIsElectionSaved(election: Election) {
+        _selectedElection.value = election
+    }
+
     fun onFollowButtonClick() {
-        viewModelScope.launch {
-            val election = _selectedElection.value
-
-            election?.let {
-                it.isSaved = !it.isSaved
+        _selectedElection.value?.let {
+            viewModelScope.launch {
+                Log.i(TAG, "Updating election ${it.id}")
+                val updatedElection = electionsRepository.updateSavedStatus(it)
+                Log.i(TAG, "Election ${it.id} status updated to ${updatedElection.isSaved}")
+                refreshIsElectionSaved(updatedElection)
             }
-
-            _selectedElection.value = election!!
-//            _selectedElection.value?.let {
-//                if(isElectionSaved.value == true) {
-//                    repository.deleteSavedElection(it)
-//                } else {
-//                    repository.insertSavedElection(it)
-//                }
-//                refreshIsElectionSaved(it)
-//            }
         }
     }
 

@@ -24,4 +24,13 @@ class ElectionsRepository(
 
         return elections
     }
+
+    suspend fun updateSavedStatus(election: Election): Election {
+        election.isSaved = !election.isSaved
+        withContext(Dispatchers.IO) {
+            electionDatabase.insert(election)
+        }
+
+        return election
+    }
 }
