@@ -60,11 +60,12 @@ class RepresentativeViewModel(app: Application) : ViewModel() {
     }
 
     fun refreshByCurrentLocation(address: Address) {
-
         val stateIndex = _states.value?.indexOf(address.state)
+        Log.i(TAG, "state index $stateIndex for ${address.state}")
         if (stateIndex != null && stateIndex >= 0) {
             selectedStateIndex.value = stateIndex!!
             _address.value = address
+            Log.i(TAG, "address refreshed to  ${_address.value.toString()}")
             refreshRepresentatives()
 
         } else {
