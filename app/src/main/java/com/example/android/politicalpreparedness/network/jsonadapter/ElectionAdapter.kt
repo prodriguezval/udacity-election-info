@@ -12,7 +12,10 @@ class ElectionAdapter {
     @FromJson
     fun divisionFromJson(ocdDivisionId: String): Division {
         val countryDelimiter = "country:"
-        val stateDelimiter = "state:"
+        var stateDelimiter = "state:"
+        if (ocdDivisionId.contains("/district:")) {
+            stateDelimiter = "district:"
+        }
         val country = ocdDivisionId.substringAfter(countryDelimiter, "")
             .substringBefore("/")
         val state = ocdDivisionId.substringAfter(stateDelimiter, "")
