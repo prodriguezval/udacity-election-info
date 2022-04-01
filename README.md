@@ -1,52 +1,41 @@
-# README Template
+# Political Preparedness
 
-Below is a template provided for use when building your README file for students.
+This project is the final test of the Android Kotlin Developer Nanodegree from Udacity.
 
-# Project Title
+### Final result
 
-Project description goes here.
+![](img/app.gif)
 
-## Getting Started
+### This project was built using
 
-Instructions for how to get a copy of the project running on your local machine.
-
-### Dependencies
-
-```
-Examples here
-```
+* Coroutine & Live Data
+* MVVM Architecture
+* Motion Layout
+* Retrofit
+* Glide
+* Room Database
+* Location
 
 ### Installation
 
-Step by step explanation of how to get a dev environment running.
-
-List out the steps
-
-```
-Give an example here
-```
-
-## Testing
-
-Explain the steps needed to run any automated tests
-
-### Break Down Tests
-
-Explain what each test does and why
+1. get the API key for Google Civics API
+   following [this](https://developers.google.com/civic-information/docs/using_api) instructions
+2. To hide the secrets from the VCS I use the plugin secrets-gradle-plugin, to run the app you add
+   line in the local.properties file as follows:
 
 ```
-Examples here
+CIVICS_API_KEY=<YOUR_CIVICS_API_KEY>
 ```
+
 ## Project Instructions
 
 This section should contain all the student deliverables for this project.
 
 ## Built With
 
-* [Item1](www.item1.com) - Description of item
-* [Item2](www.item2.com) - Description of item
-* [Item3](www.item3.com) - Description of item
+To build this project I used the Google Civics API, which you can
+find [here](https://developers.google.com/civic-information).
 
-Include all items used to build project.
+You will need an API Key in order to run the project without issues, please follow the installation
+process
 
-## License
