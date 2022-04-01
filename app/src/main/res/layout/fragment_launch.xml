@@ -24,6 +24,9 @@
             android:id="@+id/upcomingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
             android:text="@string/btn_upcoming_elections"
             app:layout_constraintBottom_toTopOf="@+id/representativeButton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,11 +36,13 @@
             android:id="@+id/representativeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
             android:text="@string/btn_find_representatives"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="10dp"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,7 +33,7 @@ class VoterInfoFragment : Fragment() {
     ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voter_info, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val electionRepository =
             ElectionsRepository(ElectionDatabase.getInstance(requireContext()), CivicsApi)

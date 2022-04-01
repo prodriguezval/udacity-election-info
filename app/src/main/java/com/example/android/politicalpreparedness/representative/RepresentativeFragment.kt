@@ -10,7 +10,6 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +53,7 @@ class RepresentativeFragment : Fragment() {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         val adapter = RepresentativeListAdapter()
         binding.representativesRecyclerView.adapter = adapter
@@ -190,7 +189,6 @@ class RepresentativeFragment : Fragment() {
 
     private fun geoCodeLocation(location: Location): Address {
         val geocoder = Geocoder(context, Locale.getDefault())
-        Log.i("GEOCODER", location.latitude.toString())
         return geocoder.getFromLocation(location.latitude, location.longitude, 1)
             .map { address ->
                 Address(

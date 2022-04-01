@@ -20,6 +20,8 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
             android:singleLine="true"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/white"
             app:title="@{viewModel.selectedElection.name}"
             app:layout_constraintTop_toTopOf="parent" />
 

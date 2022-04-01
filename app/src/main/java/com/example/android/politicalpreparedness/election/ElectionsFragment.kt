@@ -40,7 +40,7 @@ class ElectionsFragment : Fragment() {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_election, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         val upcomingElectionAdapter = ElectionListAdapter(ElectionListener {
