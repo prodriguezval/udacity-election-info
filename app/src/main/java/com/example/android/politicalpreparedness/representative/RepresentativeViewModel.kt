@@ -11,6 +11,7 @@ import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.model.Representative
 import com.example.android.politicalpreparedness.representative.repository.RepresentativeRepository
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class RepresentativeViewModel(app: Application) : ViewModel() {
@@ -44,7 +45,10 @@ class RepresentativeViewModel(app: Application) : ViewModel() {
             try {
                 _address.value!!.state = getSelectedState(selectedStateIndex.value!!)
                 val addressStr = address.value!!.toFormattedString()
-                repository.getRepresentatives(addressStr)
+                repository.getRepresentatives(addressStr).collect {
+                    _representatives.value = it
+                }
+
             } catch (e: Exception) {
                 Log.e(TAG, e.message, e)
             }
@@ -65,7 +69,6 @@ class RepresentativeViewModel(app: Application) : ViewModel() {
         if (stateIndex != null && stateIndex >= 0) {
             selectedStateIndex.value = stateIndex!!
             _address.value = address
-            Log.i(TAG, "address refreshed to  ${_address.value.toString()}")
             refreshRepresentatives()
 
         } else {
