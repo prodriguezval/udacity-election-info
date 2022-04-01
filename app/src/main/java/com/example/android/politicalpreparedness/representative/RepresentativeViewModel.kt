@@ -2,10 +2,7 @@ package com.example.android.politicalpreparedness.representative
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Address
@@ -14,14 +11,18 @@ import com.example.android.politicalpreparedness.representative.repository.Repre
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class RepresentativeViewModel(app: Application) : ViewModel() {
+class RepresentativeViewModel(private val app: Application, private val uiState: SavedStateHandle) :
+    ViewModel() {
     companion object {
         private const val TAG = "RepresentativeViewModel"
     }
 
     private val repository = RepresentativeRepository(CivicsApi)
 
-    private val _address = MutableLiveData<Address>()
+    private val _address = uiState.getLiveData(
+        "address",
+        Address("", "", "", "New York", "")
+    )
     val address: LiveData<Address>
         get() = _address
 
@@ -29,14 +30,14 @@ class RepresentativeViewModel(app: Application) : ViewModel() {
     val states: LiveData<List<String>>
         get() = _states
 
-    private val _representatives = MutableLiveData<List<Representative>>()
+    private val _representatives =
+        uiState.getLiveData<List<Representative>>("representatives", emptyList())
     val representatives: LiveData<List<Representative>>
         get() = _representatives
 
-    val selectedStateIndex = MutableLiveData<Int>()
+    val selectedStateIndex = uiState.getLiveData("state", 0)
 
     init {
-        _address.value = Address("", "", "", "New York", "")
         _states.value = app.resources.getStringArray(R.array.states).toList()
     }
 
@@ -47,8 +48,8 @@ class RepresentativeViewModel(app: Application) : ViewModel() {
                 val addressStr = address.value!!.toFormattedString()
                 repository.getRepresentatives(addressStr).collect {
                     _representatives.value = it
+                    uiState.set("representatives", it)
                 }
-
             } catch (e: Exception) {
                 Log.e(TAG, e.message, e)
             }
@@ -68,9 +69,10 @@ class RepresentativeViewModel(app: Application) : ViewModel() {
         Log.i(TAG, "state index $stateIndex for ${address.state}")
         if (stateIndex != null && stateIndex >= 0) {
             selectedStateIndex.value = stateIndex!!
+            uiState.set("state", stateIndex)
             _address.value = address
+            uiState.set("address", address)
             refreshRepresentatives()
-
         } else {
             Log.e(TAG, "Current location isn't US")
         }

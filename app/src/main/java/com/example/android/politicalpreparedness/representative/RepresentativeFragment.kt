@@ -44,7 +44,7 @@ class RepresentativeFragment : Fragment() {
     ): View {
 
         val representativeViewModelFactory =
-            RepresentativeViewModelFactory(requireActivity().application)
+            RepresentativeViewModelFactory(requireActivity().application, this, null)
         viewModel =
             ViewModelProvider(
                 this,
