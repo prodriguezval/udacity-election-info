@@ -4,14 +4,17 @@ import android.content.Context
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.network.models.Address
-import java.util.Locale
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
+import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import java.util.*
 
 class RepresentativeFragment : Fragment() {
 
@@ -20,19 +23,26 @@ class RepresentativeFragment : Fragment() {
     }
 
     lateinit var binding: FragmentRepresentativeBinding
-    //TODO: Declare ViewModel
+    lateinit var viewModel: RepresentativeViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
-        //TODO: Establish bindings
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
-        //TODO: Define and assign Representative adapter
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
+        binding.lifecycleOwner = this
+        viewModel = RepresentativeViewModel(requireActivity().application)
+        val adapter = RepresentativeListAdapter()
+        binding.representativesRecyclerView.adapter = adapter
+        viewModel.representatives.observe(viewLifecycleOwner) { representatives ->
+            adapter.submitList(representatives)
+        }
 
-        //TODO: Populate Representative adapter
-
-        //TODO: Establish button listeners for field and location search
+        binding.searchButton.setOnClickListener {
+            hideKeyboard()
+            viewModel.onSearchButtonClick()
+        }
 
         return binding.root
     }

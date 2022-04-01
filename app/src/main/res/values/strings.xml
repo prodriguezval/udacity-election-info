@@ -12,5 +12,12 @@
     <string name="text_follow_election">Follow</string>
     <string name="text_unfollow_election">Unfollow</string>
     <string name="msg_no_web_browser_found">No web broser found</string>
-
+    <string name="representative_search_text">Representative Search</string>
+    <string name="address_line_1_text">Address Line 1</string>
+    <string name="address_line_2_text">Address Line 2</string>
+    <string name="city_text">City</string>
+    <string name="zip_text">Zip</string>
+    <string name="find_my_representatives_text">Find My Representatives</string>
+    <string name="use_my_location_text">Use My Location</string>
+    <string name="my_representatives_text">My Representatives</string>
 </resources>

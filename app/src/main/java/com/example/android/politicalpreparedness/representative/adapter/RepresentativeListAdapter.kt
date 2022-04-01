@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.databinding.RepresentativeListItemBinding
-import com.example.android.politicalpreparedness.network.models.Channel
 import com.example.android.politicalpreparedness.representative.model.Representative
 
-class RepresentativeListAdapter: ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback()){
+class RepresentativeListAdapter :
+    ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepresentativeViewHolder {
         return RepresentativeViewHolder.from(parent)
@@ -30,11 +30,8 @@ class RepresentativeViewHolder(val binding: RepresentativeListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Representative) {
-//        binding.representative = item
-//        binding.representativePhoto.setImageResource(R.drawable.ic_profile)
-
-        //TODO: Show social links ** Hint: Use provided helper methods
-        //TODO: Show www link ** Hint: Use provided helper methods
+        binding.representative = item
+        showSocialLinks(item)
 
         binding.executePendingBindings()
     }
@@ -47,28 +44,48 @@ class RepresentativeViewHolder(val binding: RepresentativeListItemBinding) :
         }
     }
 
-    private fun showSocialLinks(channels: List<Channel>) {
-        val facebookUrl = getFacebookUrl(channels)
-        //if (!facebookUrl.isNullOrBlank()) { enableLink(binding.facebookIcon, facebookUrl) }
+    private fun showSocialLinks(representative: Representative) {
 
-        val twitterUrl = getTwitterUrl(channels)
-        //if (!twitterUrl.isNullOrBlank()) { enableLink(binding.twitterIcon, twitterUrl) }
+        val facebookUrl = getFacebookUrl(representative)
+        if (!facebookUrl.isNullOrBlank()) {
+            enableLink(binding.facebook, facebookUrl)
+        }
+
+        val twitterUrl = getTwitterUrl(representative)
+        if (!twitterUrl.isNullOrBlank()) {
+            enableLink(binding.twitter, twitterUrl)
+        }
+
+        val wwwUrl = getWwwUrl(representative)
+        if (!wwwUrl.isNullOrBlank()) {
+            enableLink(binding.www, wwwUrl)
+        }
     }
 
-    private fun showWWWLinks(urls: List<String>) {
-        //enableLink(binding.wwwIcon, urls.first())
+    private fun getWwwUrl(representative: Representative): String? {
+        return representative.official.urls?.firstOrNull()
     }
 
-    private fun getFacebookUrl(channels: List<Channel>): String? {
-        return channels.filter { channel -> channel.type == "Facebook" }
-                .map { channel -> "https://www.facebook.com/${channel.id}" }
+    private fun getFacebookUrl(representative: Representative): String? {
+        var facebookUrl: String? = null
+        representative.official.channels?.let { channel ->
+            facebookUrl = channel.filter { it.type == "Facebook" }
+                .map { "https://www.facebook.com/${it.id}" }
                 .firstOrNull()
+        }
+
+        return facebookUrl
     }
 
-    private fun getTwitterUrl(channels: List<Channel>): String? {
-        return channels.filter { channel -> channel.type == "Twitter" }
-                .map { channel -> "https://www.twitter.com/${channel.id}" }
+    private fun getTwitterUrl(representative: Representative): String? {
+        var twitterUrl: String? = null
+        representative.official.channels?.let { channel ->
+            twitterUrl = channel.filter { it.type == "Twitter" }
+                .map { "https://www.twitter.com/${it.id}" }
                 .firstOrNull()
+
+        }
+        return twitterUrl
     }
 
     private fun enableLink(view: ImageView, url: String) {
@@ -90,8 +107,4 @@ class RepresentativeDiffCallback : DiffUtil.ItemCallback<Representative>() {
 
     override fun areContentsTheSame(oldItem: Representative, newItem: Representative) =
         oldItem == newItem
-}
-
-class RepresentativeListener(private val clickListener: (Representative) -> Unit) {
-    fun onClick(data: Representative) = clickListener(data)
 }
