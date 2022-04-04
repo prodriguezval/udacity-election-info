@@ -15,7 +15,6 @@ class RepresentativeViewModel(private val app: Application, private val uiState:
     ViewModel() {
     companion object {
         private const val TAG = "RepresentativeViewModel"
-        private const val STATE_ADDRESS = "address"
         private const val STATE_REPRESENTATIVES = "representatives"
         private const val STATE_SELECTED_US_STATE = "state"
         private const val STATE_ADDRESS_LINE_1 = "address_line_1"
@@ -26,12 +25,7 @@ class RepresentativeViewModel(private val app: Application, private val uiState:
 
     private val repository = RepresentativeRepository(CivicsApi)
 
-    private val _address = uiState.getLiveData(
-        STATE_ADDRESS,
-        Address("", "", "", "New York", "")
-    )
-    val address: LiveData<Address>
-        get() = _address
+    private val address = Address("", "", "", "", "")
 
     private val _states = MutableLiveData<List<String>>()
     val states: LiveData<List<String>>
@@ -51,13 +45,14 @@ class RepresentativeViewModel(private val app: Application, private val uiState:
 
     init {
         _states.value = app.resources.getStringArray(R.array.states).toList()
+        _representatives.value = uiState.get(STATE_REPRESENTATIVES)
     }
 
     private fun refreshRepresentatives() {
         viewModelScope.launch {
             try {
-                _address.value!!.state = getSelectedState(selectedStateIndex.value!!)
-                val addressStr = address.value!!.toFormattedString()
+                address.state = getSelectedState(selectedStateIndex.value!!)
+                val addressStr = address.toFormattedString()
                 repository.getRepresentatives(addressStr).collect {
                     _representatives.value = it
                     uiState.set(STATE_REPRESENTATIVES, it)
@@ -115,9 +110,5 @@ class RepresentativeViewModel(private val app: Application, private val uiState:
         val text = s.toString()
         zipCode.value = text
         uiState.set(STATE_ADDRESS_ZIP_CODE, text)
-    }
-
-    fun updateUSState() {
-
     }
 }
