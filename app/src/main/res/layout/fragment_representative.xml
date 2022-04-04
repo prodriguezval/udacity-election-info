@@ -31,9 +31,10 @@
             android:layout_height="wrap_content"
             android:autofillHints="@string/address_line_1_text"
             android:ems="10"
-            android:inputType="textPostalAddress"
             android:hint="@string/address_line_1_text"
-            android:text="@={viewModel.address.line1}"
+            android:inputType="textPostalAddress"
+            android:onTextChanged="@{viewModel.updateAddressLine1}"
+            android:text="@={viewModel.addressLine1}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
@@ -46,7 +47,8 @@
             android:ems="10"
             android:inputType="textPostalAddress"
             android:hint="@string/address_line_2_text"
-            android:text="@={viewModel.address.line2}"
+            android:onTextChanged="@{viewModel.updateAddressLine2}"
+            android:text="@={viewModel.addressLine2}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_1" />
@@ -59,7 +61,8 @@
             android:ems="10"
             android:hint="@string/city_text"
             android:inputType="textPostalAddress"
-            android:text="@={viewModel.address.city}"
+            android:onTextChanged="@{viewModel.updateCity}"
+            android:text="@={viewModel.city}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/address_line_2" />
@@ -84,7 +87,8 @@
             android:ems="10"
             android:hint="@string/zip_text"
             android:inputType="textPostalAddress"
-            android:text="@={viewModel.address.zip}"
+            android:onTextChanged="@{viewModel.updateZip}"
+            android:text="@={viewModel.zipCode}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/city" />
